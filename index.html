@@ -19,12 +19,13 @@
               <div class="col-md-10 col-md-offset-1">    
                    <h1 class="display-2"> Scavenger Hunt </h1>
                     <p> Enter your answer here for direction</p>
+                    <p2 id = "questions"> </p2>
                     <form action="#" class="form-inline">
                       <div class="form-group">
                           <label class="sr-only">Name</label>
                             <input type = "text" id= "answer" class ="form-control form-control-lg" placeholder = "Enter here">
                       </div>
-                  <button type="submit" id="MyButton" class="btn btn-secondary btn-lg" style="background-color: #778899;">Submit</button>
+                  <button type="reset" id="MyButton" class="btn btn-secondary btn-lg" style="background-color: #778899;">Submit</button>
                     </form>
                     </div>
               </div>
@@ -58,8 +59,10 @@
       var myLatLng3 ={lat: 40.638253, lng: -73.96890989999997};
       var myLatLng4 ={lat: 40.633126, lng: -73.97146299999997};
       var coordinates = [myLatLng, myLatLng2, myLatLng3, myLatLng4];
-      var counter =0; 
-      var counter1 =1;
+      var counter =0;                                                      //counter for answer.
+      var counter1 =1;                                                    // counter for coordinates.
+      var counter2 =0;                                                   // counter for questions.
+      var question = ["Name a red Fruit", "What is round and fun to play with?", "A pet"];
       var  answers= ["apple", "ball", "cat"];
 
       function initMap() {
@@ -71,6 +74,7 @@
                 position: myLatLng,
                 map: map,
         });
+          document.getElementById("questions").innerHTML = question[counter2];
           $('#MyButton').on('click', function () {
               var check=document.getElementById("answer");
                 if((check.value==answers[counter]))
@@ -81,7 +85,12 @@
                                   });
                               counter++;
                               counter1++;
-                }
+                              counter2++;
+                              if(counter2 != 3)
+                            {
+                               document.getElementById("questions").innerHTML = question[counter2];
+                             }   
+                   }
                 else
                 {
                          document.getElementById('err').innerHTML= 'wrong';
