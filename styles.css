@@ -11,33 +11,26 @@ img{
 }
 
 /*cover */
-#title
-{
-    border: 1px solid red;
-    background-color: yellow;
-    padding-top: 50px;
-    padding-right: 30px;
-    padding-bottom: 50px;
-    padding-left: 80px;
-}
 
 #map-canvas
 {
-        width: 1000px;
-        height: 500px;
-         margin-top: 100px;
-		 margin-bottom: 100px;
-         margin-right: 100px;
-	     margin-left: 170px;
+        width: 400px;
+        height: 400px;
+        align-items: center;
+         margin-top: 80px;
+		 margin-bottom: 80px;
+         margin-right: 80px;
+	     margin-left: 100px;
+
 }
 
 
 
 
 #cover {
-	background: #222 url('img/new_york_city.jpg') center top no-repeat;
+	background: #222 url('img/yellow.png') center top no-repeat;
 	background-size: cover;
-	color: white;
+	color: black;
 	height: 100%;
 	text-align: center;
 	display: flex;
