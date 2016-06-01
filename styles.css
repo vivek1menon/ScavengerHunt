@@ -27,8 +27,9 @@ img{
 
 
 #cover {
-	background: #222 url('img/yellow.png') center top no-repeat;
-	background-size: cover;
+	/*background: #222 url('img/yellow.png') center top no-repeat;*/
+	background-color: yellow;
+	background-size: cover;*/
 	color: black;
 	height: 100%;
 	text-align: center;
