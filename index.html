@@ -13,12 +13,13 @@
 
     <!--   *********************************************************************************-->
 
-    <section id="cover">
+   <!-- <section id="cover">-->
       <div id="cover-caption">
-          <div class ="container">
-              <div class="col-md-10 col-md-offset-1">    
-                   <h1>Scavenger</h1>
-                   <h2> Hunt </h2>
+         <!-- <div class ="container"> -->
+              <div class="col-md-10 col-md-offset-1">  
+              <img src="img/scavenger_logo.jpg" style= "height:10vh; width: 30vh;">  
+                 
+                   <div id = "map-canvas"> </div>
                     <p> Enter your answer here for direction</p>
                     <p2 id = "questions"> </p2>
                     <form action="#" class="form-inline">
@@ -26,17 +27,17 @@
                           <label class="sr-only">Name</label>
                             <input type = "text" id= "answer" class ="form-control form-control-lg" placeholder = "Enter here">
                       </div>
-                  <button type="submit" id="MyButton" class="btn btn-secondary btn-lg" style="background-color: #778899;">Submit</button>
+                  <button type="reset" id="MyButton" class="btn btn-secondary btn-lg" style="background-color: #778899;">Submit</button>
                     </form>
                     </div>
-              </div>
+            <!--  </div> -->
             </div>
       
-             </section>
+          <!--   </section> -->
 
 </head>
 
-
+  
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdOvELcgHNHajAFjB23KZ5AjRTUr9yuN0&callback=initMap"
     async defer></script>
@@ -44,11 +45,7 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     
-  
-  <body>
-    <div id = "map-canvas">
-    </div>
- </body>
+ 
 
 
     <!-- ***************************************scripts for google map api below **********************************************-->
@@ -73,8 +70,10 @@
           var marker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
+                title: "Starting Point"
         });
-          document.getElementById("questions").innerHTML = question[counter2];
+         
+       document.getElementById("questions").innerHTML = question[counter2]; //displays question
           $('#MyButton').on('click', function () {
               var check=document.getElementById("answer");
                 if((check.value.toLowerCase()==answers[counter]))
@@ -82,12 +81,11 @@
                               var marker = new google.maps.Marker({
                                         position: coordinates[counter1],
                                         map: map,
-                                        title: "Starting Point"
                                   });
                               counter++;
                               counter1++;
                               counter2++;
-                              if(counter2 != 3)
+                             if(counter2 != 3)
                             {
                                document.getElementById("questions").innerHTML = question[counter2];
                              }   
