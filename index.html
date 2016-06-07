@@ -12,17 +12,15 @@
     <link rel="stylesheet" href ="styles.css">
 
     <!--   *********************************************************************************-->
-
    <!-- <section id="cover">-->
       <div id="cover-caption">
          <!-- <div class ="container"> -->
               <div class="col-md-10 col-md-offset-1">  
-              <img src="img/scavenger_logo.jpg" style= "height:10vh; width: 30vh;">  
-                 
+              <img src="img/scavenger_logo.jpg" style= "height:10vh; width: 30vh;">                  
                    <div id = "map-canvas"> </div>
                    <p> Enter your answer here for direction</p> 
                    <p2 id = "questions"> </p2>               
-                <!--  <p id ="location"></p>                         -->
+                    <div id ="geoLocation"></div>
                     <form action="#" class="form-inline">
                       <div class="form-group">
                           <label class="sr-only">Name</label>
@@ -40,9 +38,7 @@
             </div>
       
           <!--   </section> -->
-</head>
-
-  
+</head>  
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdOvELcgHNHajAFjB23KZ5AjRTUr9yuN0&callback=initMap"
     async defer></script>
@@ -50,31 +46,50 @@
     <title>Scavenger Map</title> 
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
-    
- 
 
-
-    <!-- ***************************************scripts for google map api below **********************************************-->
+    <!-- ************************scripts for google map api below **********************************-->
     <script>
       var map;
-      var myLatLng = {lat: 40.6303539, lng: -73.96885499999996};
-      var myLatLng2 = {lat: 40.63419690000001, lng: -73.96612570000002};
-      var myLatLng3 ={lat: 40.638253, lng: -73.96890989999997};
-      var myLatLng4 ={lat: 40.633126, lng: -73.97146299999997};
-      var coordinates = [myLatLng, myLatLng2, myLatLng3, myLatLng4];
+     // var myLatLng = {lat: 40.6303539, lng: -73.96885499999996};
+      var myLat = 40.627404016302734; var myLng = -74.17849394571912;
+      var myLat2 = 40.63419690000001; var myLng2 = -73.96612570000002;
+      var myLat3 = 40.638253;         var myLng3  =  -73.96890989999997;
+      var myLat4 =  40.633126;        var myLng4 = -73.97146299999997;
+      var coordinatesLat = [myLat, myLat2, myLat3, myLat4];
+      var coordinatesLng = [myLng, myLng2, myLng3, myLng4];
       var counter =0;                                                      //counter for answer.
-      var counter1 =1;                                                    // counter for coordinates.
+      var counter1 =0;                                                    // counter for coordinates.
       var counter2 =0;                                                   // counter for questions.
       var question = ["Name a red Fruit", "What is round and fun to play with?", "A pet"];
       var  answers= ["apple", "ball", "cat"];
 
+      var geocordlat =  0; var geocordlng =  0;
+    //var geocoordinates = [geocord, geocord2, geocord3, geocord4];
+
+      var x = document.getElementById("geoLocation");
+
+       function getLocation() {
+                      if (navigator.geolocation) {
+                              navigator.geolocation.getCurrentPosition(showPosition);
+                          } else {
+                              x.innerHTML = "Geolocation is not supported by this browser.";
+                          }
+                      }
+                      function showPosition(position) {
+                        /*  x.innerHTML = "Latitude: " + position.coords.latitude + 
+                          "<br>Longitude: " + position.coords.longitude; */
+                          geocordlat = position.coords.latitude; geocordlng = position.coords.longitude;
+                           x.innerHTML = "Latitude: " + geocordlat + 
+                          "<br>Longitude: " + geocordlng;
+                      }
+
       function initMap() {
         map = new google.maps.Map(document.getElementById('map-canvas'), {
-          center: {lat: 40.630358, lng: -73.9710437},
+          center: {lat: 40.6274040, lng: -74.1784939},
           zoom: 14
             });           
           var marker = new google.maps.Marker({
-                position: myLatLng,
+                position: {lat: myLat, lng: myLng},
                 map: map,
                 title: "Starting Point"
         });
@@ -84,15 +99,22 @@
  /*********************************In order to submit answer to the clue ***********************************/
           $('#MyButton').on('click', function () {
               var check=document.getElementById("answer");
-                if((check.value.toLowerCase()==answers[counter]))
+                getLocation();
+                
+                var newgeolat  = Math.floor(geocordlat * 1000) / 1000;
+                var newgeolng  = Math.ceil(geocordlng * 1000) / 1000;
+                var newcordlat = Math.floor(coordinatesLat[counter1] * 1000) / 1000;
+                var newcordlng = Math.ceil(coordinatesLng[counter1] * 1000) / 1000;
+
+                if((check.value.toLowerCase()==answers[counter]) && (newgeolat == newcordlat) && (newgeolng == newcordlng))
                 {
+                              counter1++;
                               var marker = new google.maps.Marker({
-                                        position: coordinates[counter1],
+                                        position: {lat: coordinatesLat[counter1], lng: coordinatesLng[counter1]},
                                         map: map,
                                   });
-                              counter++;
-                              counter1++;
-                              counter2++;
+                                      counter++;                                      
+                                      counter2++;
                              if(counter2 != 3)
                             {
                                document.getElementById("questions").innerHTML = question[counter2];
@@ -104,41 +126,17 @@
                 }
                               });
 
-  /***************************Verifying the users location, in order to get the next clue ******************************/
-  /*      function onPositionRecieved(position){
-           document.getElementById("questions").innerHTML = position;
-        }
-      $('#Mylocation').on('click', function () {
-          if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        }
-         else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-      }
+  /********************Verifying the users location, in order to get the next clue *************************/
+        
+         
+       /*   $('#Mylocation').on('click', function () {
+                   if(getLocation() == myLatLng){
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-      }
-       });                              
-               */    
-                
-
+                   }
+                });*/
         }
                         
       </script>
-
     
    <!-- *********************************************footer**********************************************-->
 
@@ -172,6 +170,4 @@
                 </div>
             </div>
           </footer>
-   
-
 </html>
