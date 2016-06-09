@@ -18,7 +18,7 @@
               <div class="col-md-10 col-md-offset-1">  
               <img src="img/scavenger_logo.jpg" style= "height:10vh; width: 30vh;">                  
                    <div id = "map-canvas"> </div>
-                   <p> Enter your answer here for direction</p> 
+                   <p>Get to the marker then enter your answer here for direction</p> 
                    <p2 id = "questions"> </p2>               
                     <div id ="geoLocation"></div>
                     <form action="#" class="form-inline">
@@ -32,6 +32,7 @@
                           <div>
                                 <button type="reset" id="Mylocation" class="btn btn-secondary btn-lg" style="background-color: #f44336; width: 280px; margin-bottom: 10px; padding: 10px 24px;">Verify Location</button>
                           </div>
+                          <div id ="WON"></div>
                       </form>
                     </div>
             <!--  </div> -->
@@ -107,7 +108,7 @@
                 var newcordlng = Math.ceil(coordinatesLng[counter1] * 1000) / 1000;
 
                 if((check.value.toLowerCase()==answers[counter]) && (newgeolat == newcordlat) && (newgeolng == newcordlng))
-                {
+                     {
                               counter1++;
                               var marker = new google.maps.Marker({
                                         position: {lat: coordinatesLat[counter1], lng: coordinatesLng[counter1]},
@@ -119,13 +120,17 @@
                             {
                                document.getElementById("questions").innerHTML = question[counter2];
                              }   
-                   }
+                          if(counter2 == 3)
+                            {
+                               document.getElementById("WON").innerHTML ="You Won the Scavenger Hunt Congrats!!!";
+                             } 
+                       }
                 else
-                {
-                         document.getElementById('err').innerHTML= 'wrong';
-                }
+                       {
+                          alert("Wrong answer try again");
+                        } 
                               });
-
+ 
   /********************Verifying the users location, in order to get the next clue *************************/
         
          
